@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+<ui:composition template="_template.xhtml">
+	<ui:define name="content">
+		<p:messages id="messages">
+			<p:autoUpdate />
+		</p:messages>
+		<h:form>
+			<p:card class="card-form">
+				<f:facet name="title">
+		        New Profile
+		    </f:facet>
+				<h:panelGrid columns="2">
+					<p:outputLabel for="name" value="Name" />
+					<p:inputText id="name" value="#{profileBean.profile.name}" required="true" validatorMessage="O nome não é válido">
+						<f:validateRegex pattern="[a-zA-Z\p{L}]+"/>
+						<f:ajax event="blur" render="messages" />
+					</p:inputText>
+					<p:outputLabel for="email" value="Email" />
+					<p:inputText id="email" value="#{profileBean.profile.email}" required="true" validatorMessage="O e-mail não é válido">
+					    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+						<f:ajax event="blur" render="messages" />
+					</p:inputText>
+					<p:outputLabel for="password" value="Password" />
+			        <p:password id="password" value="#{profileBean.profile.password}" feedback="true" required="true" validatorMessage="O campo deve ter no mínimo 8 caracteres">
+			        	<f:validateLength minimum="8"/>
+			        	<f:ajax event="blur" render="messages"/>
+			        </p:password>
+			        <p:outputLabel for="dateOfBirth" value="Date Of Birth"/>
+            		<p:calendar id="dateOfBirth" value="#{profileBean.profile.dateOfBirth}" pattern="dd/MM/yyyy" mask="true" showButtonPanel="true" required="true"/>
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-check" value="Save" action="#{profileBean.save}"/>
+					<p:commandButton icon="pi pi-times" value="Cancel" styleClass="ui-button-secondary" style="margin-left: .5em" />
+				</f:facet>
+			</p:card>
+		</h:form>
+		<h:form id="table-profiles">
+			<div class="card">
+				<p:dataTable var="profile" value="#{profileBean.profiles}">
+					<p:column headerText="Name">
+						<h:outputText value="#{profile.name}" />
+					</p:column>
+					<p:column headerText="Email">
+						<h:outputText value="#{profile.email}" />
+					</p:column>
+					<p:column headerText="Date Of Birth">
+						<h:outputText value="#{profile.dateOfBirth}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
